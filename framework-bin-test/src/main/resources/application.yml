@@ -1,0 +1,8 @@
+framework:
+  swagger:
+    enable: false
+    base-package: test.controller
+    title: 订单查询接口集合
+    description: swagger测试文档
+    terms-of-service-url: http://localhost:8999/
+    version: 1.0

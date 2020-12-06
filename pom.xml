@@ -26,6 +26,8 @@
         <module>framework-bin-cat</module>
         <module>framework-bin-dubbo</module>
         <module>framework-bin-jwt</module>
+        <module>framework-bin-common</module>
+        <module>framework-bin-test</module>
     </modules>
 
     <dependencies>
@@ -65,7 +67,17 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
+                <exclusions>
+                    <exclusion>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-starter-tomcat</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -73,26 +85,37 @@
             <dependency>
                 <groupId>com.bin.framework</groupId>
                 <artifactId>framework-bin-cat</artifactId>
+                <version>${parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.bin.framework</groupId>
                 <artifactId>framework-bin-dubbo</artifactId>
+                <version>${parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.bin.framework</groupId>
                 <artifactId>framework-bin-es</artifactId>
+                <version>${parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.bin.framework</groupId>
                 <artifactId>framework-bin-jwt</artifactId>
+                <version>${parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.bin.framework</groupId>
                 <artifactId>framework-bin-knife4j</artifactId>
+                <version>${parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.bin.framework</groupId>
                 <artifactId>framework-bin-rocketmq</artifactId>
+                <version>${parent.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.bin.framework</groupId>
+                <artifactId>framework-bin-common</artifactId>
+                <version>${parent.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

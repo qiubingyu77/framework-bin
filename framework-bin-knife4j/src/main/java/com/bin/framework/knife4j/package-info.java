@@ -1,0 +1,1 @@
+package com.bin.framework.knife4j;
