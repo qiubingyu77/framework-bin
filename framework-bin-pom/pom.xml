@@ -9,7 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>framework-bin-pom</artifactId>
-    <version>${parent.version}</version>
     <!--
         设置为pom类型，依赖其他需要使用的jar包
     -->
