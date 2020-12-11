@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
 @ConfigurationProperties(prefix = "framework.swagger")
-class Knife4jProperties  {
+public class Knife4jProperties  {
     /**
      * 是否启用对应模块
      */

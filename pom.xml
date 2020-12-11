@@ -28,6 +28,7 @@
         <module>framework-bin-jwt</module>
         <module>framework-bin-common</module>
         <module>framework-bin-test</module>
+        <module>framework-bin-web</module>
     </modules>
 
     <dependencies>
@@ -64,20 +65,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-configuration-processor</artifactId>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <exclusions>
-                    <exclusion>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-starter-tomcat</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
-        </dependency>
     </dependencies>
 
     <dependencyManagement>

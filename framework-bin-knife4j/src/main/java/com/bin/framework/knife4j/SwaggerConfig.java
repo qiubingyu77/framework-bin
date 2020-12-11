@@ -1,6 +1,7 @@
 package com.bin.framework.knife4j;
 
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,25 +19,22 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @ConditionalOnProperty(prefix = "framework.swagger", name = "enable",havingValue = "true")
 class SwaggerConfig {
 
-    @Bean
-    public String test(){
-        System.out.println("test");
-        return "test";
-    }
+
+    @Autowired
+    Knife4jProperties knife4jProperties;
 
     @Bean
-    public Docket docket(Knife4jProperties knife4jProperties){
+    public Docket docket(){
         return new Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)
-                .apiInfo(apiInfo(knife4jProperties))
+                .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(knife4jProperties.getBasePackage()))
                 .paths(PathSelectors.any())
                 .build();
     }
 
-
-    public ApiInfo apiInfo(Knife4jProperties knife4jProperties){
+    public ApiInfo apiInfo(){
         return new ApiInfoBuilder()
                 .title(knife4jProperties.getTitle())
                 .description(knife4jProperties.getDescription())
