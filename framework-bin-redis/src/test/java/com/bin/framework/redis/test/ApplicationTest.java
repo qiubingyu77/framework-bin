@@ -10,6 +10,7 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 
 /**
  * @author qiubingyu
@@ -38,6 +39,14 @@ public class ApplicationTest implements ApplicationRunner {
         RedisConfigProperties redisConfigProperties = applicationContext.getBean(RedisConfigProperties.class);
         System.out.println(redisConfigProperties.isEnable());
     }
+
+    @Test
+    public void test2(){
+        RedisConnectionFactory redisConnectionFactory = applicationContext.getBean(RedisConnectionFactory.class);
+        for (int i = 0; i < 10 ;i++)
+            System.out.println(redisConnectionFactory.getConnection());
+    }
+
 
     @Override
     public void run(ApplicationArguments args) throws Exception {

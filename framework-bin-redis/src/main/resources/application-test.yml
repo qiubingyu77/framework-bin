@@ -1,3 +1,5 @@
 framework:
-       redis:
-         enable: false
+      redis:
+        enable: true
+        host-names: 192.168.220.130:6379
+        mode: Standalone

@@ -18,13 +18,44 @@ public class RedisConfigProperties {
     /**
      * 机器节点 配置模板 127.0.0.1:6379,127.0.0.1:6380
      */
-    private String host;
+    private String hostNames;
     /**
-     * 超时时间
+     * 连接超时时间
      */
-    private int timeout;
+    private int connectionTimeout;
+    /**
+     * 读取超时时间
+     */
+    private int soTimeout;
     /**
      * 数据库0-15
      */
-    private int dbIndex;
+    private int db;
+    /**
+     * 用户名
+     */
+    private String user;
+    /**
+     * 密码
+     */
+    private String password;
+    /**
+     * 最大连接数
+     */
+    private int maxTotal;
+    /**
+     * 最大空闲连接数
+     */
+    private int maxIdle;
+    /**
+     * 最小连接数
+     */
+    private int minIdle;
+    /**
+     * 模式
+     * 单机 Standalone
+     * 哨兵 Sentinel
+     * 集群 Cluster
+     */
+    private String mode = "Standalone";
 }
