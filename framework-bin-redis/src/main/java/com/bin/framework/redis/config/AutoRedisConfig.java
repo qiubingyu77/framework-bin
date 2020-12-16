@@ -26,12 +26,12 @@ import java.time.Duration;
 @Configuration
 @ConditionalOnProperty(prefix = "framework.redis", name = "enable", havingValue = "true")
 @EnableConfigurationProperties(value = {RedisConfigProperties.class})
-public class AutoRedisConfig {
+ class AutoRedisConfig {
 
-    @Bean
+   /* @Bean
     public JedisShardInfo jedisShardInfo(RedisConfigProperties redisConfigProperties){
         return null;
-    }
+    }*/
 
     @Bean
     public JedisPoolConfig jedisPoolConfig(RedisConfigProperties redisConfigProperties){
@@ -54,40 +54,31 @@ public class AutoRedisConfig {
         RedisStandaloneConfiguration standaloneConfig = null; //单机模式
         RedisSentinelConfiguration sentinelConfig = null;  //哨兵模式
         RedisClusterConfiguration clusterConfig = null;   //集群模式
-
-        String host;
-        int port;
-        try {
-            String[] hostAndPort = redisConfigProperties.getHostNames().split(",");
-            hostAndPort = hostAndPort[0].split(":");
-             host = hostAndPort[0];
-             port = NumberUtils.toInt(hostAndPort[1]);
-        }catch (Exception e){
-            throw  new RuntimeException("请正确配置redis节点...",e);
-        }
-
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         JedisClientConfiguration clientConfig = JedisClientConfiguration.builder()
                 .connectTimeout(Duration.ofSeconds(redisConfigProperties.getConnectionTimeout()))
                 .readTimeout(Duration.ofSeconds(redisConfigProperties.getSoTimeout()))
+                .usePooling()
+                .poolConfig(jedisPoolConfig)
                 .build();
 
-        switch (redisConfigProperties.getMode()){
-            case "Sentinel":
+        switch (redisConfigProperties.getStrategy().getName()){
+            case "Sentinel":  //哨兵模式
                 sentinelConfig = new RedisSentinelConfiguration();
-                sentinelConfig.setDatabase(redisConfigProperties.getDb());
+//                sentinelConfig.setDatabase(redisConfigProperties.getDb());
 //                sentinelConfig.setMaster("");
 //                sentinelConfig.setSentinels("");
                 return new JedisConnectionFactory(sentinelConfig,clientConfig);
-            case "Cluster":
+            case "Cluster":  //集群模式
                 clusterConfig = new RedisClusterConfiguration();
 //                clusterConfig.setClusterNodes();
                 return new JedisConnectionFactory(clusterConfig,clientConfig);
-            case "Standalone":
+            case "Standalone": //单机模式
             default:
                 standaloneConfig = new RedisStandaloneConfiguration();
-                standaloneConfig.setDatabase(redisConfigProperties.getDb());
-                standaloneConfig.setHostName(host);
-                standaloneConfig.setPort(port);
+//                standaloneConfig.setDatabase(redisConfigProperties.getDb());
+//                standaloneConfig.setHostName(host);
+//                standaloneConfig.setPort(port);
                 return new JedisConnectionFactory(standaloneConfig,clientConfig);
         }
     }

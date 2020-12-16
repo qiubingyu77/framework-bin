@@ -1,5 +1,11 @@
 framework:
       redis:
         enable: true
-        host-names: 192.168.220.130:6379
-        mode: Standalone
+        host-names:
+        max-total: 5
+        max-idle: 5
+        min-idle: 0
+        strategy:
+              name: Standalone
+              host-names: 192.168.220.130:6379
+              db: 0

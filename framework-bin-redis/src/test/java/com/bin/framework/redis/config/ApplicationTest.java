@@ -1,7 +1,5 @@
-package com.bin.framework.redis.test;
+package com.bin.framework.redis.config;
 
-import com.bin.framework.redis.config.AutoRedisConfig;
-import com.bin.framework.redis.config.RedisConfigProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.ApplicationArguments;
@@ -10,6 +8,7 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 
 /**
@@ -43,8 +42,10 @@ public class ApplicationTest implements ApplicationRunner {
     @Test
     public void test2(){
         RedisConnectionFactory redisConnectionFactory = applicationContext.getBean(RedisConnectionFactory.class);
-        for (int i = 0; i < 10 ;i++)
-            System.out.println(redisConnectionFactory.getConnection());
+        for (int i = 0; i < 10 ;i++){
+            RedisConnection connection = redisConnectionFactory.getConnection();
+            System.out.println(connection);
+        }
     }
 
 
