@@ -1,6 +1,8 @@
 package com.bin.framework.redis.config;
 
-import com.bin.framework.redis.dto.RedisStrategy;
+import com.bin.framework.redis.strategy.ClusterStrategy;
+import com.bin.framework.redis.strategy.SentinelStrategy;
+import com.bin.framework.redis.strategy.StandaloneStrategy;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -25,14 +27,6 @@ class RedisConfigProperties {
      */
     private int soTimeout;
     /**
-     * 用户名
-     */
-    private String user;
-    /**
-     * 密码
-     */
-    private String password;
-    /**
      * 最大连接数
      */
     private int maxTotal;
@@ -51,5 +45,9 @@ class RedisConfigProperties {
      * 哨兵 Sentinel
      * 集群 Cluster
      */
-    private RedisStrategy strategy;
+    private StandaloneStrategy standalone;
+
+    private SentinelStrategy sentinel;
+
+    private ClusterStrategy cluster;
 }

@@ -5,7 +5,7 @@ framework:
         max-total: 5
         max-idle: 5
         min-idle: 0
-        strategy:
-              name: Standalone
-              host-names: 192.168.220.130:6379
-              db: 0
+        standalone:
+            host-name: 192.168.220.130:6379
+            db: 0
+

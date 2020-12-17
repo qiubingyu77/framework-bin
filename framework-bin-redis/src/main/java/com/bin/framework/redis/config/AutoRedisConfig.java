@@ -1,8 +1,9 @@
 package com.bin.framework.redis.config;
 
+import com.bin.framework.redis.strategy.ClusterStrategy;
+import com.bin.framework.redis.strategy.SentinelStrategy;
+import com.bin.framework.redis.strategy.StandaloneStrategy;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -12,17 +13,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.*;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.*;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.JedisShardInfo;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author qiubingyu
  * @ClassName AutoRedisConfig.java
  * @createTime 2020/12/11
  **/
+@Slf4j
 @Configuration
 @ConditionalOnProperty(prefix = "framework.redis", name = "enable", havingValue = "true")
 @EnableConfigurationProperties(value = {RedisConfigProperties.class})
@@ -36,9 +43,9 @@ import java.time.Duration;
     @Bean
     public JedisPoolConfig jedisPoolConfig(RedisConfigProperties redisConfigProperties){
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        jedisPoolConfig.setMaxTotal(redisConfigProperties.getMaxTotal() == 0 ? 8 : redisConfigProperties.getMaxTotal());
-        jedisPoolConfig.setMaxIdle(redisConfigProperties.getMaxIdle() == 0 ? 8 : redisConfigProperties.getMaxIdle());
-        jedisPoolConfig.setMinIdle(redisConfigProperties.getMinIdle() == 0 ? 0 : redisConfigProperties.getMinIdle());
+        jedisPoolConfig.setMaxTotal(redisConfigProperties.getMaxTotal() == 0 ? JedisPoolConfig.DEFAULT_MAX_TOTAL : redisConfigProperties.getMaxTotal());
+        jedisPoolConfig.setMaxIdle(redisConfigProperties.getMaxIdle() == 0 ? JedisPoolConfig.DEFAULT_MAX_IDLE : redisConfigProperties.getMaxIdle());
+        jedisPoolConfig.setMinIdle(redisConfigProperties.getMinIdle() == 0 ? JedisPoolConfig.DEFAULT_MIN_IDLE : redisConfigProperties.getMinIdle());
         jedisPoolConfig.setTestWhileIdle(true);
         jedisPoolConfig.setTestOnBorrow(true);
         jedisPoolConfig.setTestOnReturn(false);
@@ -51,36 +58,48 @@ import java.time.Duration;
      */
     @Bean
     public RedisConnectionFactory redisConnectionFactory(RedisConfigProperties redisConfigProperties) {
-        RedisStandaloneConfiguration standaloneConfig = null; //单机模式
-        RedisSentinelConfiguration sentinelConfig = null;  //哨兵模式
-        RedisClusterConfiguration clusterConfig = null;   //集群模式
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         JedisClientConfiguration clientConfig = JedisClientConfiguration.builder()
                 .connectTimeout(Duration.ofSeconds(redisConfigProperties.getConnectionTimeout()))
                 .readTimeout(Duration.ofSeconds(redisConfigProperties.getSoTimeout()))
-                .usePooling()
+                .usePooling()//使用连接池
                 .poolConfig(jedisPoolConfig)
                 .build();
-
-        switch (redisConfigProperties.getStrategy().getName()){
-            case "Sentinel":  //哨兵模式
-                sentinelConfig = new RedisSentinelConfiguration();
-//                sentinelConfig.setDatabase(redisConfigProperties.getDb());
-//                sentinelConfig.setMaster("");
-//                sentinelConfig.setSentinels("");
-                return new JedisConnectionFactory(sentinelConfig,clientConfig);
-            case "Cluster":  //集群模式
-                clusterConfig = new RedisClusterConfiguration();
-//                clusterConfig.setClusterNodes();
-                return new JedisConnectionFactory(clusterConfig,clientConfig);
-            case "Standalone": //单机模式
-            default:
-                standaloneConfig = new RedisStandaloneConfiguration();
-//                standaloneConfig.setDatabase(redisConfigProperties.getDb());
-//                standaloneConfig.setHostName(host);
-//                standaloneConfig.setPort(port);
+        return Optional.of(redisConfigProperties).map(redisConfig->{
+            StandaloneStrategy standalone;
+            if (Objects.nonNull(standalone = redisConfig.getStandalone())){
+                Assert.notNull(redisConfig.getStandalone().getHostName(),"standalone模式请配置hostName");
+                RedisStandaloneConfiguration standaloneConfig; //单机模式
+                String[] hostName = StringUtils.split(standalone.getHostName(), ":");
+                standaloneConfig =  new RedisStandaloneConfiguration(hostName[0],NumberUtils.toInt(hostName[1]));
+                standaloneConfig.setDatabase(redisConfigProperties.getStandalone().getDb());
                 return new JedisConnectionFactory(standaloneConfig,clientConfig);
-        }
+            }
+            ClusterStrategy cluster = redisConfig.getCluster();
+            if (Objects.nonNull(cluster)){
+                List<RedisNode> clusterNodes = cluster.getClusterNodes().stream().map(n -> {
+                    String[] hostName = StringUtils.split(n, ":");
+                    return new RedisNode(hostName[0],NumberUtils.toInt(hostName[1]));
+                }).collect(Collectors.toList());
+                RedisClusterConfiguration clusterConfig = new RedisClusterConfiguration();
+                clusterConfig.setClusterNodes(clusterNodes);
+                clusterConfig.setMaxRedirects(16);
+                return new JedisConnectionFactory(clusterConfig,clientConfig);
+            }
+            SentinelStrategy sentinel = redisConfig.getSentinel();
+            if (Objects.nonNull(sentinel)){
+                RedisSentinelConfiguration sentinelConfig = new RedisSentinelConfiguration(); //单机模式
+                sentinelConfig.setMaster(sentinel.getMaster());
+                List<RedisNode> sentinels = cluster.getClusterNodes().stream().map(n -> {
+                    String[] hostName = StringUtils.split(n, ":");
+                    return new RedisNode(hostName[0],NumberUtils.toInt(hostName[1]));
+                }).collect(Collectors.toList());
+                sentinelConfig.setSentinels(sentinels);
+                sentinelConfig.setDatabase(sentinel.getDb());
+                return new JedisConnectionFactory(sentinelConfig,clientConfig);
+            }
+            throw new RuntimeException("请配置redis连接模式......");
+        }).get();
     }
 
     @Bean
@@ -90,5 +109,54 @@ import java.time.Duration;
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         return redisTemplate;
     }
+
+    @Bean
+    @ConditionalOnBean(RedisTemplate.class)
+    public <K,V> ValueOperations<K,V> valueOperations(RedisTemplate redisTemplate){
+        return redisTemplate.opsForValue();
+    }
+
+    @Bean
+    @ConditionalOnBean(RedisTemplate.class)
+    public <K,V> ListOperations<K, V> listOperations(RedisTemplate redisTemplate){
+        return redisTemplate.opsForList();
+    }
+
+    @Bean
+    @ConditionalOnBean(RedisTemplate.class)
+    public <K,V> SetOperations<K,V> setOperations(RedisTemplate redisTemplate){
+        return redisTemplate.opsForSet();
+    }
+
+    @Bean
+    @ConditionalOnBean(RedisTemplate.class)
+    public <K> StreamOperations<K, ?, ?> streamOperations(RedisTemplate redisTemplate){
+        return redisTemplate.opsForStream();
+    }
+
+    @Bean
+    @ConditionalOnBean(RedisTemplate.class)
+    public <K,V> ZSetOperations<K,V> zSetOperations(RedisTemplate redisTemplate){
+        return redisTemplate.opsForZSet();
+    }
+
+    @Bean
+    @ConditionalOnBean(RedisTemplate.class)
+    public <K,V> GeoOperations<K,V> geoOperations(RedisTemplate redisTemplate){
+        return redisTemplate.opsForGeo();
+    }
+
+    @Bean
+    @ConditionalOnBean(RedisTemplate.class)
+    public <K,V> HyperLogLogOperations<K,V> hyperLogLogOperations(RedisTemplate redisTemplate){
+        return redisTemplate.opsForHyperLogLog();
+    }
+
+    @Bean
+    @ConditionalOnBean(RedisTemplate.class)
+    public <K,V> ClusterOperations<K,V> clusterOperations(RedisTemplate redisTemplate){
+        return redisTemplate.opsForCluster();
+    }
+
 
 }
