@@ -9,11 +9,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.*;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import redis.clients.jedis.JedisPoolConfig;
@@ -31,9 +33,10 @@ import java.util.stream.Collectors;
  **/
 @Slf4j
 @Configuration
-@ConditionalOnProperty(prefix = "framework.redis", name = "enable", havingValue = "true")
+@ComponentScan(basePackages = {"com.bin.framework.redis"})
 @EnableConfigurationProperties(value = {RedisConfigProperties.class})
- class AutoRedisConfig {
+@ConditionalOnProperty(prefix = "framework.redis", name = "enable", havingValue = "true")
+class AutoRedisConfig {
 
    /* @Bean
     public JedisShardInfo jedisShardInfo(RedisConfigProperties redisConfigProperties){
@@ -107,6 +110,8 @@ import java.util.stream.Collectors;
     public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory){
         RedisTemplate redisTemplate = new RedisTemplate();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
+        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+        redisTemplate.setDefaultSerializer(stringRedisSerializer);
         return redisTemplate;
     }
 

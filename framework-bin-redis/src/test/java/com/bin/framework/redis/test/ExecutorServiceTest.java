@@ -1,7 +1,9 @@
 package com.bin.framework.redis.test;
 
+import com.bin.framework.redis.ops.impl.ValueOpsFactroyBean;
 import org.junit.Test;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,5 +19,11 @@ public class ExecutorServiceTest {
             });
         }
 
+    }
+
+    @Test
+    public void test4(){
+        ValueOpsFactroyBean valueOpsFactroyBean = new ValueOpsFactroyBean();
+        System.out.println(valueOpsFactroyBean.getObjectType());
     }
 }

@@ -1,5 +1,7 @@
 package com.bin.framework.redis.config;
 
+import com.bin.framework.redis.ops.ValueOps;
+import com.bin.framework.redis.ops.impl.ValueOpsFactroyBean;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.ApplicationArguments;
@@ -11,6 +13,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -51,6 +55,12 @@ public class ApplicationTest implements ApplicationRunner {
         }
     }
 
+    @Test
+    public void test3(){
+        ValueOps<String,String> ops = applicationContext.getBean(ValueOps.class);
+        ops.set("邱炳玉","邱炳玉");
+        System.out.println(ops.get("邱炳玉"));
+    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
