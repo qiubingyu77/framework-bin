@@ -60,7 +60,7 @@ class AutoRedisConfig {
      * @return
      */
     @Bean
-    public JedisConnectionFactory jedisConnectionFactory(RedisConfigProperties redisConfigProperties) {
+    public RedisConnectionFactory redisConnectionFactory(RedisConfigProperties redisConfigProperties) {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         JedisClientConfiguration clientConfig = JedisClientConfiguration.builder()
                 .connectTimeout(Duration.ofSeconds(redisConfigProperties.getConnectionTimeout()))
@@ -107,9 +107,9 @@ class AutoRedisConfig {
 
     @Bean
     @ConditionalOnBean(JedisConnectionFactory.class)
-    public RedisTemplate redisTemplate(JedisConnectionFactory jedisConnectionFactory){
+    public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory){
         RedisTemplate redisTemplate = new RedisTemplate();
-        redisTemplate.setConnectionFactory(jedisConnectionFactory);
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         redisTemplate.setDefaultSerializer(stringRedisSerializer);
         return redisTemplate;
