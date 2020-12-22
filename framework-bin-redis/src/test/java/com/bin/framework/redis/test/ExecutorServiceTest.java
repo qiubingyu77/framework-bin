@@ -1,9 +1,9 @@
 package com.bin.framework.redis.test;
 
-import com.bin.framework.redis.ops.impl.ValueOpsFactroyBean;
 import org.junit.Test;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,7 +23,13 @@ public class ExecutorServiceTest {
 
     @Test
     public void test4(){
-        ValueOpsFactroyBean valueOpsFactroyBean = new ValueOpsFactroyBean();
-        System.out.println(valueOpsFactroyBean.getObjectType());
+    }
+
+    @Test
+    public void test2(){
+        TreeMap<String,String> treeMap = new TreeMap<>();
+        for (int i=0; i < 100; i++){
+            treeMap.put(Integer.toString(i),Integer.toString(i));
+        }
     }
 }

@@ -7,5 +7,5 @@ import org.springframework.data.redis.core.ZSetOperations;
  * @ClassName ZSetOps
  * @date 2020/12/17
  **/
-public interface ZSetOps extends ZSetOperations {
+public interface ZSetOps<K,V> extends ZSetOperations {
 }

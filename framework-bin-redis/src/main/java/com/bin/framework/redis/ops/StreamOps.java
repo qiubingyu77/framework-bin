@@ -7,5 +7,5 @@ import org.springframework.data.redis.core.StreamOperations;
  * @ClassName StreamOps
  * @date 2020/12/17
  **/
-public interface StreamOps extends StreamOperations {
+public interface StreamOps<K, HK, HV> extends StreamOperations {
 }

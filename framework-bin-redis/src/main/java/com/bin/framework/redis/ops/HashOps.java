@@ -7,5 +7,5 @@ import org.springframework.data.redis.core.HashOperations;
  * @ClassName HashOps
  * @date 2020/12/18
  **/
-public interface HashOps extends HashOperations {
+public interface HashOps<H, HK, HV> extends HashOperations {
 }

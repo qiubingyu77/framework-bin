@@ -60,7 +60,7 @@ class AutoRedisConfig {
      * @return
      */
     @Bean
-    public RedisConnectionFactory redisConnectionFactory(RedisConfigProperties redisConfigProperties) {
+    public JedisConnectionFactory jedisConnectionFactory(RedisConfigProperties redisConfigProperties) {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
         JedisClientConfiguration clientConfig = JedisClientConfiguration.builder()
                 .connectTimeout(Duration.ofSeconds(redisConfigProperties.getConnectionTimeout()))
@@ -106,62 +106,13 @@ class AutoRedisConfig {
     }
 
     @Bean
-    @ConditionalOnBean(RedisConnectionFactory.class)
-    public RedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory){
+    @ConditionalOnBean(JedisConnectionFactory.class)
+    public RedisTemplate redisTemplate(JedisConnectionFactory jedisConnectionFactory){
         RedisTemplate redisTemplate = new RedisTemplate();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setConnectionFactory(jedisConnectionFactory);
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         redisTemplate.setDefaultSerializer(stringRedisSerializer);
         return redisTemplate;
     }
-
-    @Bean
-    @ConditionalOnBean(RedisTemplate.class)
-    public <K,V> ValueOperations<K,V> valueOperations(RedisTemplate redisTemplate){
-        return redisTemplate.opsForValue();
-    }
-
-    @Bean
-    @ConditionalOnBean(RedisTemplate.class)
-    public <K,V> ListOperations<K, V> listOperations(RedisTemplate redisTemplate){
-        return redisTemplate.opsForList();
-    }
-
-    @Bean
-    @ConditionalOnBean(RedisTemplate.class)
-    public <K,V> SetOperations<K,V> setOperations(RedisTemplate redisTemplate){
-        return redisTemplate.opsForSet();
-    }
-
-    @Bean
-    @ConditionalOnBean(RedisTemplate.class)
-    public <K> StreamOperations<K, ?, ?> streamOperations(RedisTemplate redisTemplate){
-        return redisTemplate.opsForStream();
-    }
-
-    @Bean
-    @ConditionalOnBean(RedisTemplate.class)
-    public <K,V> ZSetOperations<K,V> zSetOperations(RedisTemplate redisTemplate){
-        return redisTemplate.opsForZSet();
-    }
-
-    @Bean
-    @ConditionalOnBean(RedisTemplate.class)
-    public <K,V> GeoOperations<K,V> geoOperations(RedisTemplate redisTemplate){
-        return redisTemplate.opsForGeo();
-    }
-
-    @Bean
-    @ConditionalOnBean(RedisTemplate.class)
-    public <K,V> HyperLogLogOperations<K,V> hyperLogLogOperations(RedisTemplate redisTemplate){
-        return redisTemplate.opsForHyperLogLog();
-    }
-
-    @Bean
-    @ConditionalOnBean(RedisTemplate.class)
-    public <K,V> ClusterOperations<K,V> clusterOperations(RedisTemplate redisTemplate){
-        return redisTemplate.opsForCluster();
-    }
-
 
 }
