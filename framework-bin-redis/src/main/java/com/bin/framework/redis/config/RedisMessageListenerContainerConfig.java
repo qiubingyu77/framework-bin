@@ -1,6 +1,5 @@
 package com.bin.framework.redis.config;
 
-import com.bin.framework.redis.mq.annotation.Consumer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
 @Configuration
 class RedisMessageListenerContainerConfig {
 
-    @Bean
+/*    @Bean
     public Executor executor(){
         return  new ThreadPoolExecutor(3, 5, 10,
                 TimeUnit.MINUTES,new LinkedBlockingQueue<Runnable>(),r->{
@@ -51,5 +50,5 @@ class RedisMessageListenerContainerConfig {
         return listenerMap.entrySet().stream()
                 .filter(entry -> Objects.nonNull(AnnotationUtils.findAnnotation(entry.getValue().getClass(), Consumer.class)))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
+    }*/
 }

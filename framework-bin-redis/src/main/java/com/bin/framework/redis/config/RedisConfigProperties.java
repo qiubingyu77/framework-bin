@@ -6,6 +6,8 @@ import com.bin.framework.redis.strategy.StandaloneStrategy;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.List;
+
 /**
  * @author qiubingyu
  * @ClassName RedisConfigProperties.java
@@ -31,13 +33,13 @@ class RedisConfigProperties {
      */
     private int maxTotal;
     /**
-     * 最大空闲连接数
-     */
-    private int maxIdle;
-    /**
-     * 最小连接数
+     * 最小空闲连接数
      */
     private int minIdle;
+    /**
+     * 数据库 集群模式下无效
+     */
+    private int db;
 
     /**
      * 模式
@@ -45,9 +47,13 @@ class RedisConfigProperties {
      * 哨兵 Sentinel
      * 集群 Cluster
      */
-    private StandaloneStrategy standalone;
-
-    private SentinelStrategy sentinel;
-
-    private ClusterStrategy cluster;
+    private RedisMode redisMode;
+    /**
+     * 主节点
+     */
+    private String master;
+    /**
+     * redis 从节点 单机无效
+     */
+    private List<String> redisNodes;
 }

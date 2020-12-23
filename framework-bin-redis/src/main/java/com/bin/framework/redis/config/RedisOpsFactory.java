@@ -18,7 +18,7 @@ import org.springframework.data.redis.core.*;
 @ConditionalOnBean(RedisTemplate.class)
 class RedisOpsFactory {
 
-    @Autowired
+   /* @Autowired
     RedisTemplate redisTemplate;
 
     @Bean
@@ -64,7 +64,7 @@ class RedisOpsFactory {
     @Bean
     public <K,V> ClusterOps<K,V> clusterOps(){
         return (ClusterOps<K,V>) ProxyFactory.getProxy(ClusterOps.class,(MethodInterceptor) methodInvocation -> methodInvocation.getMethod().invoke(redisTemplate.opsForCluster(),methodInvocation.getArguments()));
-    }
+    }*/
 
 
 }

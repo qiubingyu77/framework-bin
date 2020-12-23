@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  **/
 public class IProduceTest extends BaseTest {
 
-    @Test
+  /*  @Test
     public void sendMessage() {
         final IProduce<User> produce = applicationContext.getBean(IProduce.class);
         produce.sendMessage("user",new User("1","qby","qby"));
@@ -29,7 +29,7 @@ public class IProduceTest extends BaseTest {
         final ArrayList<User> users = Lists.newArrayList(new User("2", "qby", "qby"), new User("3", "qby", "qby"), new User("4", "qby", "qby"));
         final IProduce<User> produce = applicationContext.getBean(IProduce.class);
         produce.sendMessages("user",users);
-    }
+    }*/
 }
 
 @Data

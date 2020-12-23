@@ -33,13 +33,6 @@ public class ApplicationTest implements ApplicationRunner {
                 .run("");
     }
 
-    @Test
-    public void test1(){
-        AutoRedisConfig autoRedisConfig = applicationContext.getBean(AutoRedisConfig.class);
-        System.out.println(autoRedisConfig);
-        RedisConfigProperties redisConfigProperties = applicationContext.getBean(RedisConfigProperties.class);
-        System.out.println(redisConfigProperties.isEnable());
-    }
 
     @Test
     public void test2(){
@@ -48,13 +41,6 @@ public class ApplicationTest implements ApplicationRunner {
             RedisConnection connection = redisConnectionFactory.getConnection();
             System.out.println(connection);
         }
-    }
-
-    @Test
-    public void test3(){
-        ValueOps<String,String> ops = applicationContext.getBean(ValueOps.class);
-        ops.set("邱炳玉","邱炳玉");
-        System.out.println(ops.get("邱炳玉"));
     }
 
     @Override
