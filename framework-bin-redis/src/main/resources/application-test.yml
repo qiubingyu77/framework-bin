@@ -1,11 +1,10 @@
 framework:
       redis:
         enable: true
-        host-names:
-        max-total: 5
-        max-idle: 5
+        redis-mode: single
+        master: 10.130.36.104:6379
+        connection-timeout: 500
+        so-timeout: 1000
+        db: 0
+        max-total: 18
         min-idle: 0
-        standalone:
-            host-name: 192.168.220.130:6379
-            db: 0
-

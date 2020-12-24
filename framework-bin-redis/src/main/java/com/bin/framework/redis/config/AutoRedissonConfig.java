@@ -3,8 +3,8 @@ package com.bin.framework.redis.config;
 import com.bin.framework.common.utils.DefaultThreadFactory;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
+import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.*;
-import org.redisson.misc.URIBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import java.net.URI;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -41,6 +40,7 @@ public class AutoRedissonConfig {
         config.setExecutor(excutor);
 //        config.setThreads(2);
 //        config.setNettyThreads(2);
+        config.setCodec(new JsonJacksonCodec());
         switch (redisConfigProperties.getRedisMode()){
             case SINGLE:
                 final SingleServerConfig singleServerConfig = config.useSingleServer();
@@ -85,12 +85,6 @@ public class AutoRedissonConfig {
         }
         return config;
     }
-
-    public static void main(String[] args) {
-        final URI uri = URIBuilder.create("redis://127.0.0.1:6379");
-        System.out.println(uri);
-    }
-
 
     @Bean
     @ConditionalOnBean(Config.class)

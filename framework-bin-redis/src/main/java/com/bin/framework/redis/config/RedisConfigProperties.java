@@ -1,8 +1,5 @@
 package com.bin.framework.redis.config;
 
-import com.bin.framework.redis.strategy.ClusterStrategy;
-import com.bin.framework.redis.strategy.SentinelStrategy;
-import com.bin.framework.redis.strategy.StandaloneStrategy;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
