@@ -2,7 +2,7 @@ framework:
       redis:
         enable: true
         redis-mode: single
-        master: 10.130.36.104:6379
+        master: 192.168.220.130:6379
         connection-timeout: 500
         so-timeout: 1000
         db: 0
