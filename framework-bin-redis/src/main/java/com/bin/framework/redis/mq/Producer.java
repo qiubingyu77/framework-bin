@@ -13,7 +13,6 @@ import java.lang.annotation.Target;
  * @date 2020/12/25
  **/
 
-@Autowired
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Producer {

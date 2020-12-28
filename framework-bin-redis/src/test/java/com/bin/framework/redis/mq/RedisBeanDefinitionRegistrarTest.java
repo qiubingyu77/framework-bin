@@ -1,6 +1,7 @@
 package com.bin.framework.redis.mq;
 
 import com.bin.framework.redis.BaseTest;
+import com.bin.framework.redis.ops.impl.TestProduce;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -14,7 +15,9 @@ public class RedisBeanDefinitionRegistrarTest extends BaseTest {
 
     @Test
     public void postProcessBeanDefinitionRegistry() {
-        RedisBeanDefinitionRegistrar bean = applicationContext.getBean(RedisBeanDefinitionRegistrar.class);
+        TestProduce bean = applicationContext.getBean(TestProduce.class);
+        boolean qby = bean.getProduce().sendMessag("qby");
+        System.out.println(qby);
     }
 
     @Test

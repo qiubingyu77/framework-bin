@@ -13,7 +13,6 @@ import org.springframework.beans.factory.config.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -24,11 +23,11 @@ import java.util.Map;
  * @date 2020/12/25
  **/
 @Component
-class RedisBeanDefinitionRegistrar implements BeanPostProcessor{
+class ProduceAnnotationBeanPostProcessor implements BeanPostProcessor{
     @Autowired
     RedissonClient redissonClient;
 
-    Map<Type,Produce> produceMap = Maps.newHashMap();
+    Map<Type,Produce> produceMap = Maps.newConcurrentMap();
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -65,14 +64,7 @@ class RedisBeanDefinitionRegistrar implements BeanPostProcessor{
         public Object invoke(MethodInvocation methodInvocation) throws Throwable {
             Object[] arguments = methodInvocation.getArguments();
             long publish = redissonClient.getTopic(toipc).publish(arguments[0]);
-            return publish !=0;
+            return publish == 1;
         }
     }
-
-    public static void main(String[] args) throws NoSuchFieldException {
-        Field produce = RedisBeanDefinitionRegistrar.class.getDeclaredField("produce");
-        Class<?> type = produce.getType();
-        System.out.println(((ParameterizedType)produce.getGenericType()).getActualTypeArguments()[0]);
-    }
-
 }
