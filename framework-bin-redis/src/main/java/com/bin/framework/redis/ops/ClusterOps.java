@@ -7,5 +7,5 @@ import org.springframework.data.redis.core.ClusterOperations;
  * @ClassName ClusterOps
  * @date 2020/12/17
  **/
-public interface ClusterOps<K,V> extends ClusterOperations {
+public interface ClusterOps<K, V> extends ClusterOperations {
 }

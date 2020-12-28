@@ -10,35 +10,35 @@ import java.util.concurrent.TimeUnit;
  **/
 public interface KeyOps {
     /**
-     * @param key     键
+     * @param key        键
      * @param timeToLive 过期时间值
-     * @param timeUnit  过期时间单位
+     * @param timeUnit   过期时间单位
      * @return
      */
-    boolean expire(String key,long timeToLive, TimeUnit timeUnit);
+    boolean expire(String key, long timeToLive, TimeUnit timeUnit);
 
     /**
      * 是否过期
+     *
      * @param timeToLive
      * @return
      */
-    boolean expireAt(String key,long timeToLive);
+    boolean expireAt(String key, long timeToLive);
 
     /**
      * 是否过期
+     *
      * @param date
      * @return
      */
-    boolean expireAt(String key,Date date);
+    boolean expireAt(String key, Date date);
 
     /**
-     *
      * @return
      */
     boolean clearExpire(String key);
 
     /**
-     *
      * @return
      */
     long remainTimeToLive(String key);
@@ -47,9 +47,9 @@ public interface KeyOps {
 
     boolean unlink(String key);
 
-    void rename(String key,String newName);
+    void rename(String key, String newName);
 
-    boolean renamenx(String key,String newName);
+    boolean renamenx(String key, String newName);
 
     boolean isExists(String key);
 }

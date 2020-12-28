@@ -7,6 +7,6 @@ package com.bin.framework.redis.mq;
  **/
 public interface Produce<M> {
 
-    void sendMessag(String topic,M message);
+    void sendMessag(M message);
 
 }

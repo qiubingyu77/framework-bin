@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.Banner;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -18,10 +19,11 @@ public abstract class BaseTest implements ApplicationRunner {
     protected ConfigurableApplicationContext applicationContext;
 
     @Before
-    public void start(){
+    public void start() {
         applicationContext = new SpringApplicationBuilder()
                 .sources(ApplicationTest.class)
                 .profiles("test")
+                .web(WebApplicationType.NONE)
                 .bannerMode(Banner.Mode.CONSOLE)
                 .run("");
     }

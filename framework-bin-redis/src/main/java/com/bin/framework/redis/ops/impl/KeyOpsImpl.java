@@ -12,10 +12,10 @@ import java.util.concurrent.TimeUnit;
  * @date 2020/12/23
  **/
 @Component
- class KeyOpsImpl extends AbstrackRedisOps implements KeyOps {
+class KeyOpsImpl extends AbstrackRedisOps implements KeyOps {
     @Override
     public boolean expire(String key, long timeToLive, TimeUnit timeUnit) {
-        return redissonClient.getBucket(key).expire(timeToLive,timeUnit);
+        return redissonClient.getBucket(key).expire(timeToLive, timeUnit);
     }
 
     @Override

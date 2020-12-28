@@ -25,7 +25,7 @@ public class ApplicationTest implements ApplicationRunner {
 
 
     @Before
-    public void start(){
+    public void start() {
         applicationContext = new SpringApplicationBuilder()
                 .sources(ApplicationTest.class)
                 .profiles("test")
@@ -35,9 +35,9 @@ public class ApplicationTest implements ApplicationRunner {
 
 
     @Test
-    public void test2(){
+    public void test2() {
         RedisConnectionFactory redisConnectionFactory = applicationContext.getBean(RedisConnectionFactory.class);
-        for (int i = 0; i < 10 ;i++){
+        for (int i = 0; i < 10; i++) {
             RedisConnection connection = redisConnectionFactory.getConnection();
             System.out.println(connection);
         }

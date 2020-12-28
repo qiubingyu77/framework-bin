@@ -7,5 +7,5 @@ import org.springframework.data.redis.core.GeoOperations;
  * @ClassName GeoOps
  * @date 2020/12/17
  **/
-public interface GeoOps<K,V> extends GeoOperations {
+public interface GeoOps<K, V> extends GeoOperations {
 }

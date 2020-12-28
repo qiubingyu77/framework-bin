@@ -21,10 +21,9 @@ public class ValueOpsTest extends BaseTest {
     ValueOps<User> ops;
 
     @Before
-    public void before(){
+    public void before() {
         ops = applicationContext.getBean(ValueOps.class);
     }
-
 
 
     @Test
@@ -62,7 +61,7 @@ public class ValueOpsTest extends BaseTest {
     @Test
     public void set() {
         final ValueOps<User> bean = applicationContext.getBean(ValueOps.class);
-        bean.set("qby",new User("QBY","QBY"));
+        bean.set("qby", new User("QBY", "QBY"));
     }
 
     @Test

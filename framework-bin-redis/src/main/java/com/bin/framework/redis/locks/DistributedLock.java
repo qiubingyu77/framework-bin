@@ -13,7 +13,7 @@ import java.util.concurrent.locks.Condition;
  * @date 2020/12/24
  **/
 @Component
- class DistributedLock implements DistLock {
+class DistributedLock implements DistLock {
 
     @Autowired
     RedissonClient redissonClient;
@@ -30,7 +30,7 @@ import java.util.concurrent.locks.Condition;
 
     @Override
     public boolean tryLock(String lock, long time, TimeUnit unit) throws InterruptedException {
-        return redissonClient.getLock(lock).tryLock(time,unit);
+        return redissonClient.getLock(lock).tryLock(time, unit);
     }
 
     @Override

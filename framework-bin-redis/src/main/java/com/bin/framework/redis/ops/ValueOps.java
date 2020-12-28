@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
  * @ClassName ValueOps
  * @date 2020/12/17
  **/
-public interface ValueOps<V>{
+public interface ValueOps<V> {
 
     long size(String key);
 
@@ -16,16 +16,16 @@ public interface ValueOps<V>{
 
     V getAndDelete(String key);
 
-    boolean trySet(String key,V value);
+    boolean trySet(String key, V value);
 
-    boolean trySet(String key,V value, long timeToLive, TimeUnit timeUnit);
+    boolean trySet(String key, V value, long timeToLive, TimeUnit timeUnit);
 
-    boolean compareAndSet(String key,V newVal, V oldVal);
+    boolean compareAndSet(String key, V newVal, V oldVal);
 
-    V getAndSet(String key,V value);
+    V getAndSet(String key, V value);
 
-    void set(String key,V value);
+    void set(String key, V value);
 
-    void set(String key,V value, long timeToLive, TimeUnit timeUnit);
+    void set(String key, V value, long timeToLive, TimeUnit timeUnit);
 
 }

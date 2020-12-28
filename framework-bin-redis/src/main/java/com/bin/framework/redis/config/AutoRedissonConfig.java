@@ -5,6 +5,7 @@ import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.codec.JsonJacksonCodec;
 import org.redisson.config.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,6 +19,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import static com.bin.framework.redis.config.RedisMode.*;
 
 /**
  * @autor qiubingyu
@@ -33,21 +36,21 @@ public class AutoRedissonConfig {
     private static final String REDIS_PRE = "redis://";
 
     @Bean
-    public Config config(RedisConfigProperties redisConfigProperties){
+    public Config config(RedisConfigProperties redisConfigProperties) {
         Config config = new Config();
-        ExecutorService excutor = new ThreadPoolExecutor(8,16,600, TimeUnit.SECONDS,
+        ExecutorService excutor = new ThreadPoolExecutor(8, 16, 600, TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>(), DefaultThreadFactory.defaultThreadFactory());
         config.setExecutor(excutor);
 //        config.setThreads(2);
 //        config.setNettyThreads(2);
         config.setCodec(new JsonJacksonCodec());
-        switch (redisConfigProperties.getRedisMode()){
+        switch (redisConfigProperties.getRedisMode()) {
             case SINGLE:
                 final SingleServerConfig singleServerConfig = config.useSingleServer();
                 singleServerConfig.setKeepAlive(true);
                 singleServerConfig.setConnectionPoolSize(redisConfigProperties.getMaxTotal());
                 singleServerConfig.setConnectionMinimumIdleSize(redisConfigProperties.getMinIdle());
-                singleServerConfig.setAddress(REDIS_PRE+redisConfigProperties.getMaster());
+                singleServerConfig.setAddress(REDIS_PRE + redisConfigProperties.getMaster());
                 singleServerConfig.setDatabase(redisConfigProperties.getDb());
                 singleServerConfig.setConnectTimeout(redisConfigProperties.getConnectionTimeout());
                 singleServerConfig.setTimeout(redisConfigProperties.getSoTimeout());
@@ -58,7 +61,7 @@ public class AutoRedissonConfig {
                 sentinelServersConfig.setDatabase(redisConfigProperties.getDb());
                 sentinelServersConfig.setConnectTimeout(redisConfigProperties.getConnectionTimeout());
                 sentinelServersConfig.setTimeout(redisConfigProperties.getSoTimeout());
-                sentinelServersConfig.setMasterName(REDIS_PRE+redisConfigProperties.getMaster());
+                sentinelServersConfig.setMasterName(REDIS_PRE + redisConfigProperties.getMaster());
                 sentinelServersConfig.setMasterConnectionPoolSize(redisConfigProperties.getMaxTotal());
                 sentinelServersConfig.setMasterConnectionMinimumIdleSize(redisConfigProperties.getMinIdle());
                 sentinelServersConfig.setSlaveConnectionPoolSize(redisConfigProperties.getMaxTotal());
@@ -88,7 +91,7 @@ public class AutoRedissonConfig {
 
     @Bean
     @ConditionalOnBean(Config.class)
-    public RedissonClient redissonClient(Config config){
+    public RedissonClient redissonClient(Config config) {
         return Redisson.create(config);
     }
 }

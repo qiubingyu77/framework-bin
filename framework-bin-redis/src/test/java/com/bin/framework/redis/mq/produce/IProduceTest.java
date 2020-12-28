@@ -34,7 +34,7 @@ public class IProduceTest extends BaseTest {
 
 @Data
 @AllArgsConstructor
-class User implements Serializable{
+class User implements Serializable {
     String id;
     String username;
     String password;

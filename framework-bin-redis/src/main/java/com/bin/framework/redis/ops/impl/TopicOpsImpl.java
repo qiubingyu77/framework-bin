@@ -13,9 +13,10 @@ import java.util.List;
  * @date 2020/12/24
  **/
 @Component
- class TopicOpsImpl<M> extends AbstrackRedisOps implements TopicOps<M> {
+class TopicOpsImpl<M> extends AbstrackRedisOps implements TopicOps<M> {
     @Override
     public List<String> getChannelNames() {
+        return null;
     }
 
     @Override

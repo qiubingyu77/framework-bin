@@ -7,5 +7,5 @@ import org.springframework.data.redis.core.SetOperations;
  * @ClassName SetOps
  * @date 2020/12/17
  **/
-public interface SetOps<K,V> extends SetOperations {
+public interface SetOps<K, V> extends SetOperations {
 }

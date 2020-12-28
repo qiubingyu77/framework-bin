@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableKnife4j
 @EnableSwagger2
 @Configuration
-@ConditionalOnProperty(prefix = "framework.swagger", name = "enable",havingValue = "true")
+@ConditionalOnProperty(prefix = "framework.swagger", name = "enable", havingValue = "true")
 class SwaggerConfig {
 
 
@@ -24,7 +24,7 @@ class SwaggerConfig {
     Knife4jProperties knife4jProperties;
 
     @Bean
-    public Docket docket(){
+    public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo())
@@ -34,13 +34,13 @@ class SwaggerConfig {
                 .build();
     }
 
-    public ApiInfo apiInfo(){
+    public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title(knife4jProperties.getTitle())
                 .description(knife4jProperties.getDescription())
                 .version(knife4jProperties.getVersion())
                 .termsOfServiceUrl(knife4jProperties
-                .getTermsOfServiceUrl())
+                        .getTermsOfServiceUrl())
                 .build();
     }
 

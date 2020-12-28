@@ -26,31 +26,31 @@ public class SpringContainer implements ApplicationContextAware {
         SpringContainer.applicationContext = applicationContext;
     }
 
-    public static <T> T getBean(Class<T> clazz){
+    public static <T> T getBean(Class<T> clazz) {
         return applicationContext.getBean(clazz);
     }
 
-    public static <T> T getBean(String name){
+    public static <T> T getBean(String name) {
         return (T) applicationContext.getBean(name);
     }
 
-    public static <T> T getBean(String name,Class<T> clazz){
-        return applicationContext.getBean(name,clazz);
+    public static <T> T getBean(String name, Class<T> clazz) {
+        return applicationContext.getBean(name, clazz);
     }
 
-    public static Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotation){
+    public static Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotation) {
         return applicationContext.getBeansWithAnnotation(annotation);
     }
 
-    public static <T>  Map<String,T> getBeansOfType(Class<T> clazz){
+    public static <T> Map<String, T> getBeansOfType(Class<T> clazz) {
         return applicationContext.getBeansOfType(clazz);
     }
 
-    public static <T>  Map<String,T> getBeansOfType(Class<T> clazz,boolean includeNonSingletons, boolean allowEagerInit){
-        return applicationContext.getBeansOfType(clazz,includeNonSingletons,allowEagerInit);
+    public static <T> Map<String, T> getBeansOfType(Class<T> clazz, boolean includeNonSingletons, boolean allowEagerInit) {
+        return applicationContext.getBeansOfType(clazz, includeNonSingletons, allowEagerInit);
     }
 
-    public static <A extends Annotation> A findAnnotationOnBean(String name,Class<A> clazz){
-        return applicationContext.findAnnotationOnBean(name,clazz);
+    public static <A extends Annotation> A findAnnotationOnBean(String name, Class<A> clazz) {
+        return applicationContext.findAnnotationOnBean(name, clazz);
     }
 }

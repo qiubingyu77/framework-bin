@@ -42,13 +42,13 @@ class ValueOpsImpl<V> extends AbstrackRedisOps implements ValueOps<V> {
     @Override
     public boolean trySet(String key, V value, long timeToLive, TimeUnit timeUnit) {
         final RBucket<V> bucket = redissonClient.getBucket(key);
-        return bucket.trySet(value,timeToLive,timeUnit);
+        return bucket.trySet(value, timeToLive, timeUnit);
     }
 
     @Override
     public boolean compareAndSet(String key, V oldVal, V newVal) {
         final RBucket<V> bucket = redissonClient.getBucket(key);
-        return bucket.compareAndSet(oldVal,newVal);
+        return bucket.compareAndSet(oldVal, newVal);
     }
 
     @Override
@@ -66,6 +66,6 @@ class ValueOpsImpl<V> extends AbstrackRedisOps implements ValueOps<V> {
     @Override
     public void set(String key, V value, long timeToLive, TimeUnit timeUnit) {
         final RBucket<V> bucket = redissonClient.getBucket(key);
-        bucket.set(value,timeToLive,timeUnit);
+        bucket.set(value, timeToLive, timeUnit);
     }
 }

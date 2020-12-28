@@ -10,13 +10,13 @@ import java.util.concurrent.locks.Condition;
  **/
 public interface DistLock {
 
-     void lock(String lock);
+    void lock(String lock);
 
-     boolean tryLock(String lock);
+    boolean tryLock(String lock);
 
-     boolean tryLock(String lock,long time, TimeUnit unit) throws InterruptedException;
+    boolean tryLock(String lock, long time, TimeUnit unit) throws InterruptedException;
 
-     void unlock(String lock);
+    void unlock(String lock);
 
-     Condition newCondition(String lock);
+    Condition newCondition(String lock);
 }

@@ -12,7 +12,7 @@ import java.util.List;
  **/
 @Data
 @ConfigurationProperties(prefix = "framework.redis")
-class RedisConfigProperties {
+public class RedisConfigProperties {
     /**
      * 开启redis模块功能
      */

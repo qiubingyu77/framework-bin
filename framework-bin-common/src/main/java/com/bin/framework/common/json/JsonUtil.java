@@ -16,11 +16,11 @@ import java.util.Map;
  **/
 public abstract class JsonUtil {
 
-    public static String bean2json(Object bean){
-        try(StringWriter stringWriter = new StringWriter()){
+    public static String bean2json(Object bean) {
+        try (StringWriter stringWriter = new StringWriter()) {
             JsonGenerator generator = JsonFactory.builder().build().createGenerator(stringWriter);
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValue(generator,bean);
+            objectMapper.writeValue(generator, bean);
             return stringWriter.toString();
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,14 +28,14 @@ public abstract class JsonUtil {
         return null;
     }
 
-    public static <T> T json2bean(Object bean,Class<T> clazz){
+    public static <T> T json2bean(Object bean, Class<T> clazz) {
         return null;
     }
 
     public static void main(String[] args) {
-        Map<String,Object> test = Maps.newHashMap();
-        test.put("1",1);
-        test.put("qby","qby");
+        Map<String, Object> test = Maps.newHashMap();
+        test.put("1", 1);
+        test.put("qby", "qby");
         final String s = JsonUtil.bean2json(test);
         System.out.println(s);
     }

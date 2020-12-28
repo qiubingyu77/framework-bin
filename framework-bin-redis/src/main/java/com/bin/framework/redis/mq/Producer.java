@@ -1,6 +1,6 @@
 package com.bin.framework.redis.mq;
 
-import org.springframework.context.annotation.Import;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,8 +12,9 @@ import java.lang.annotation.Target;
  * @ClassName Producer
  * @date 2020/12/25
  **/
-@Import(RedisBeanDefinitionRegistrar.class)
-@Target(ElementType.TYPE)
+
+@Autowired
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Producer {
     String topic();

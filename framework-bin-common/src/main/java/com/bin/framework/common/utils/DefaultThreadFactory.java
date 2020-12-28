@@ -18,7 +18,7 @@ public class DefaultThreadFactory implements ThreadFactory {
         return null;
     }
 
-    public static ThreadFactory defaultThreadFactory(){
+    public static ThreadFactory defaultThreadFactory() {
         return defaultThreadFactory;
     }
 }

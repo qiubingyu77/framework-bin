@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2020/12/23
  **/
 @Component
- class ListOpsImpl<V> extends AbstrackRedisOps implements ListOps<V> {
+class ListOpsImpl<V> extends AbstrackRedisOps implements ListOps<V> {
     @Override
     public List<V> get(String key, int... index) {
         final RList<V> list = redissonClient.getList(key);
@@ -29,25 +29,25 @@ import java.util.List;
     @Override
     public int addAfter(String key, V indexVal, V nextVal) {
         final RList<V> list = redissonClient.getList(key);
-        return list.addAfter(indexVal,nextVal);
+        return list.addAfter(indexVal, nextVal);
     }
 
     @Override
     public int addBefore(String key, V indexVal, V preVal) {
         final RList<V> list = redissonClient.getList(key);
-        return list.addBefore(indexVal,preVal);
+        return list.addBefore(indexVal, preVal);
     }
 
     @Override
     public void fastSet(String key, int index, V val) {
         final RList<V> list = redissonClient.getList(key);
-        list.fastSet(index,val);
+        list.fastSet(index, val);
     }
 
     @Override
     public List<V> subList(String key, int index1, int index2) {
         final RList<V> list = redissonClient.getList(key);
-        return list.subList(index1,index2);
+        return list.subList(index1, index2);
     }
 
     @Override
@@ -59,7 +59,7 @@ import java.util.List;
     @Override
     public void trim(String key, int index1, int index2) {
         final RList<V> list = redissonClient.getList(key);
-        list.trim(index1,index2);
+        list.trim(index1, index2);
     }
 
     @Override
@@ -71,6 +71,6 @@ import java.util.List;
     @Override
     public boolean remove(String key, V val, int indx) {
         final RList<V> list = redissonClient.getList(key);
-        return list.remove(val,indx);
+        return list.remove(val, indx);
     }
 }
