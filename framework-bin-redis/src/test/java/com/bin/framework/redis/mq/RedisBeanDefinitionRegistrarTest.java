@@ -4,6 +4,8 @@ import com.bin.framework.redis.BaseTest;
 import com.bin.framework.redis.ops.impl.TestProduce;
 import org.junit.Test;
 
+import java.util.concurrent.locks.LockSupport;
+
 import static org.junit.Assert.*;
 
 /**
@@ -16,8 +18,9 @@ public class RedisBeanDefinitionRegistrarTest extends BaseTest {
     @Test
     public void postProcessBeanDefinitionRegistry() {
         TestProduce bean = applicationContext.getBean(TestProduce.class);
-        boolean qby = bean.getProduce().sendMessag("qby");
+        boolean qby = bean.getProduce().sendMessag(new TestProduce.User("qby","123"));
         System.out.println(qby);
+        LockSupport.park();
     }
 
     @Test

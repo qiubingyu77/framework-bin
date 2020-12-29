@@ -1,7 +1,9 @@
 package com.bin.framework.redis.mq;
 
+import com.bin.framework.redis.mq.anno.Producer;
 import com.google.common.collect.Maps;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang3.ArrayUtils;
@@ -22,6 +24,7 @@ import java.util.Map;
  * @ClassName RedisBeanDefinitionRegistrar
  * @date 2020/12/25
  **/
+@Slf4j
 @Component
 class ProduceAnnotationBeanPostProcessor implements BeanPostProcessor{
     @Autowired
